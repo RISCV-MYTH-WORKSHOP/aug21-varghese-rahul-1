@@ -40,10 +40,12 @@
    |cpu
       @0
          $reset = *reset;
+         $start = >>1$reset && !$reset;
+         $valid = $reset ? 0 : $start ? 1 : >>3$valid ;
       
          $pc[31:0] = >>1$reset ? 32'b0 :
-                     >>1$taken_br ? >>1$br_tgt_pc :
-                     >>1$inc_pc;
+                     >>3$valid_taken_br ? >>3$br_tgt_pc :
+                     >>3$inc_pc;
          
          $imem_rd_en = !$reset;
          $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
@@ -142,7 +144,7 @@
          $is_load   = $opcode ==? 7'b0000011;
          
          `BOGUS_USE($is_load $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add $is_lui $is_auipc $is_jal $is_jalb $is_sb $is_sh $is_sw $is_slti $is_sltiu $is_xori $is_ori $is_andi $is_slli $is_srli $is_srai $is_sub $is_sll $is_slt $is_sltu $is_xor $is_srl $is_sra $is_or $is_and)
-
+      @2
          $rf_rd_en1 = $rs1_valid;
          $rf_rd_index1[4:0] = $rs1;
          $rf_rd_en2 = $rs2_valid;
@@ -150,6 +152,10 @@
 
          $src1_value[31:0] = $rf_rd_data1;
          $src2_value[31:0] = $rf_rd_data2;
+         
+         $br_tgt_pc[31:0] = $pc + $imm;
+         
+      @3
          
          $sltu_rslt[31:0]  = $src1_value[31:0] < $src2_value[31:0];
          $sltiu_rslt[31:0] = $src1_value[31:0] < $imm;
@@ -181,9 +187,6 @@
                          $is_s_instr ? $src1_value[31:0] + $imm :
                          32'bx;
          
-         $rf_wr_en = $rd_valid && $rd != 5'b0;
-         $rf_wr_index[4:0] = $rd;
-         $rf_wr_data[31:0] = $result;
          
          $taken_br = $is_beq ? ($src1_value[31:0] == $src2_value[31:0]) :
                      $is_bne ?($src1_value[31:0] != $src2_value[31:0]) :
@@ -193,10 +196,17 @@
                      $is_bgeu ? ($src1_value[31:0] >= $src2_value[31:0]) :
                      1'b0;
          
-         $br_tgt_pc[31:0] = $pc + $imm;
+         $rf_wr_en = $rd_valid && $rd != 5'b0 & $valid;
+         $rf_wr_index[4:0] = $rd;
+         $rf_wr_data[31:0] = $result;
+         
+      
+         
+         
+         
+         $valid_taken_br = $valid && $taken_br;
          
          *passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9);
-         
 
       
 
@@ -206,7 +216,7 @@
 
    
    // Assert these to end simulation (before Makerchip cycle limit).
-   *passed = *cyc_cnt > 40;
+   //*passed = *cyc_cnt > 40;
    *failed = 1'b0;
    
    // Macro instantiations for:
@@ -216,7 +226,7 @@
    //  o CPU visualization
    |cpu
       m4+imem(@1)    // Args: (read stage)
-      m4+rf(@1, @1)  // Args: (read stage, write stage) - if equal, no register bypass is required
+      m4+rf(@2, @3)  // Args: (read stage, write stage) - if equal, no register bypass is required
       //m4+dmem(@4)    // Args: (read/write stage)
    
    m4+cpu_viz(@4)    // For visualisation, argument should be at least equal to the last stage of CPU logic. @4 would work for all labs.
