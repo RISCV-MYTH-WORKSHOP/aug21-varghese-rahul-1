@@ -197,9 +197,9 @@
                      $is_bgeu ? ($src1_value[31:0] >= $src2_value[31:0]) :
                      1'b0;
          
-         $rf_wr_en = $rd_valid && $rd != 5'b0 & $valid;
-         $rf_wr_index[4:0] = $rd;
-         $rf_wr_data[31:0] = $result;
+         $rf_wr_en = ($rd_valid && ($rd != 5'b0) && $valid) || >>2$valid_load;
+         $rf_wr_index[4:0] = !(>>2$valid_load) ? $rd : >>2$rd;
+         $rf_wr_data[31:0] = !(>>2$valid_load) ? $result : >>2$ld_data ;
          
          $valid = !( >>1$valid_taken_br || >>2$valid_taken_br || >>1$valid_load || >>2$valid_load );
          
@@ -207,7 +207,16 @@
          
          $valid_taken_br = $valid && $taken_br;
          
+      @4 
+         $dmem_wr_en = $is_s_instr && $valid ;
+         $dmem_addr[3:0] = $result[5:2] ;
+         $dmem_wr_data[31:0] = $src2_value ;
+         $dmem_rd_en = $is_load;
          
+         
+      
+      @5
+         $ld_data[31:0] = $dmem_rd_data;
          
          *passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9);
 
@@ -230,7 +239,7 @@
    |cpu
       m4+imem(@1)    // Args: (read stage)
       m4+rf(@2, @3)  // Args: (read stage, write stage) - if equal, no register bypass is required
-      //m4+dmem(@4)    // Args: (read/write stage)
+      m4+dmem(@4)    // Args: (read/write stage)
    
    m4+cpu_viz(@4)    // For visualisation, argument should be at least equal to the last stage of CPU logic. @4 would work for all labs.
 \SV
