@@ -1,15 +1,18 @@
 \m4_TLV_version 1d: tl-x.org
 \SV
 
-   // =========================================
-   // Welcome!  Try the tutorials via the menu.
-   // =========================================
-
-   // Default Makerchip TL-Verilog Code Template
+   // This code can be found in: https://github.com/stevehoover/RISC-V_MYTH_Workshop
+   
+   m4_include_lib(['https://raw.githubusercontent.com/stevehoover/RISC-V_MYTH_Workshop/bd1f186fde018ff9e3fd80597b7397a1c862cf15/tlv_lib/calculator_shell_lib.tlv'])
+   
+   //https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0BghPjx
+   
+\SV
    
    // Macro providing required top-level module definition, random
    // stimulus support, and Verilator config.
    m4_makerchip_module   // (Expanded in Nav-TLV pane.)
+   
 \TLV
    |calc
       @0
