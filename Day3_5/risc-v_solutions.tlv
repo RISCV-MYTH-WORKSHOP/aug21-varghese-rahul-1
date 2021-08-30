@@ -40,12 +40,13 @@
    |cpu
       @0
          $reset = *reset;
-         $start = >>1$reset && !$reset;
-         $valid = $reset ? 0 : $start ? 1 : >>3$valid ;
+         //$start = >>1$reset && !$reset;
+         //$valid = $reset ? 0 : $start ? 1 : >>3$valid ;
       
          $pc[31:0] = >>1$reset ? 32'b0 :
                      >>3$valid_taken_br ? >>3$br_tgt_pc :
-                     >>3$inc_pc;
+                     >>3$valid_load ? >>3$inc_pc :
+                     >>1$inc_pc;
          
          $imem_rd_en = !$reset;
          $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
@@ -200,11 +201,13 @@
          $rf_wr_index[4:0] = $rd;
          $rf_wr_data[31:0] = $result;
          
-      
+         $valid = !( >>1$valid_taken_br || >>2$valid_taken_br || >>1$valid_load || >>2$valid_load );
          
-         
+         $valid_load = $valid && $is_load;
          
          $valid_taken_br = $valid && $taken_br;
+         
+         
          
          *passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9);
 
