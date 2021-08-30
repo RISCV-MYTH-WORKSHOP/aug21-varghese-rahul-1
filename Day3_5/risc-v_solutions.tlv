@@ -137,6 +137,8 @@
          $is_or    = $dec_bits ==? 11'b0_110_0110011;
          $is_and   = $dec_bits ==? 11'b0_111_0110011;
          
+         $is_load   = $opcode ==? 7'b0000011;
+         
          `BOGUS_USE($is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add $is_lui $is_auipc $is_jal $is_jalb $is_sb $is_sh $is_sw $is_slti $is_sltiu $is_xori $is_ori $is_andi $is_slli $is_srli $is_srai $is_sub $is_sll $is_slt $is_sltu $is_xor $is_srl $is_sra $is_or $is_and)
 
          $rf_rd_en1 = $rs1_valid;
@@ -147,7 +149,35 @@
          $src1_value[31:0] = $rf_rd_data1;
          $src2_value[31:0] = $rf_rd_data2;
          
+         $sltu_rslt[31:0]  = $src1_value[31:0] < $src2_value[31:0];
+         $sltiu_rslt[31:0] = $src1_value[31:0] < $imm;
          
+         $result[31:0] = $is_addi ? $src1_value[31:0] + $imm :
+                         $is_add ? $src1_value[31:0] + $src2_value[31:0] :
+                         $is_sub ? $src1_value[31:0] - $src2_value[31:0] :
+                         $is_slli ? $src1_value[31:0] << $imm[5:0] :
+                         $is_sll ? $src1_value[31:0] << $src2_value[4:0] :
+                         $is_srli ? $src1_value[31:0] >> $imm[5:0] :
+                         $is_srl ? $src1_value[31:0] >> $src2_value[4:0] :
+                         $is_andi ? $src1_value[31:0] & $imm :
+                         $is_and ? $src1_value[31:0] & $src2_value[31:0] :
+                         $is_ori ? $src1_value[31:0] | $imm :
+                         $is_or ? $src1_value[31:0] | $src2_value[31:0] :
+                         $is_xori ? $src1_value[31:0] ^ $imm :
+                         $is_xor ? $src1_value[31:0] ^ $src2_value[31:0] :
+                         $is_srai ? { {32{$src1_value[31]}}, $src1_value} >> $imm[4:0] :
+                         $is_sra ? { {32{$src1_value[31]}}, $src1_value} >> $src2_value[4:0] :
+                         $is_sltu ? $sltu_rslt :
+                         $is_sltiu ? $sltiu_rslt :
+                         $is_slt ? ($src1_value[31] == $src2_value[31]) ? $sltu_rslt : {31'b0, $src1_value[31]} :
+                         $is_slti ? ($src1_value[31] == $imm[31]) ? $sltiu_rslt : {31'b0, $src1_value[31]} :
+                         $is_lui ? {$imm[31:12], 12'b0} :
+                         $is_auipc ? $pc + $imm :
+                         $is_jal ? $pc + 32'd4 :
+                         $is_jalr ? $pc + 32'd4 :
+                         $is_load ? $src1_value[31:0] + $imm :
+                         $is_s_instr ? $src1_value[31:0] + $imm :
+                         32'bx;
          
          
 
