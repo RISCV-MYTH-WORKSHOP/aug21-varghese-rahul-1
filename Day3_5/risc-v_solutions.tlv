@@ -41,7 +41,9 @@
       @0
          $reset = *reset;
       
-         $pc[31:0] = >>1$reset ? 32'b0 :>>1$inc_pc;
+         $pc[31:0] = >>1$reset ? 32'b0 :
+                     >>1$taken_br ? >>1$br_tgt_pc :
+                     >>1$inc_pc;
          
          $imem_rd_en = !$reset;
          $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
@@ -139,7 +141,7 @@
          
          $is_load   = $opcode ==? 7'b0000011;
          
-         `BOGUS_USE($is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add $is_lui $is_auipc $is_jal $is_jalb $is_sb $is_sh $is_sw $is_slti $is_sltiu $is_xori $is_ori $is_andi $is_slli $is_srli $is_srai $is_sub $is_sll $is_slt $is_sltu $is_xor $is_srl $is_sra $is_or $is_and)
+         `BOGUS_USE($is_load $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add $is_lui $is_auipc $is_jal $is_jalb $is_sb $is_sh $is_sw $is_slti $is_sltiu $is_xori $is_ori $is_andi $is_slli $is_srli $is_srai $is_sub $is_sll $is_slt $is_sltu $is_xor $is_srl $is_sra $is_or $is_and)
 
          $rf_rd_en1 = $rs1_valid;
          $rf_rd_index1[4:0] = $rs1;
@@ -179,6 +181,19 @@
                          $is_s_instr ? $src1_value[31:0] + $imm :
                          32'bx;
          
+         $rf_wr_en = $rd_valid && $rd != 5'b0;
+         $rf_wr_index[4:0] = $rd;
+         $rf_wr_data[31:0] = $result;
+         
+         $taken_br = $is_beq ? ($src1_value[31:0] == $src2_value[31:0]) :
+                     $is_bne ?($src1_value[31:0] != $src2_value[31:0]) :
+                     $is_blt ? (($src1_value[31:0] < $src2_value[31:0]) ^ ($src1_value[31] != $src2_value[31])) :
+                     $is_bge ? (($src1_value[31:0] >= $src2_value[31:0]) ^ ($src1_value[31] != $src2_value[31])) :
+                     $is_bltu ? ($src1_value[31:0] <  $src2_value[31:0]) :
+                     $is_bgeu ? ($src1_value[31:0] >= $src2_value[31:0]) :
+                     1'b0;
+         
+         $br_tgt_pc[31:0] = $pc + $imm;
          
 
       
