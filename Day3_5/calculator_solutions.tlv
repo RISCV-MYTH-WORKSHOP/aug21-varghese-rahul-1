@@ -21,9 +21,9 @@
    $prod[31:0] = $val1 * $val2;
    $quot[31:0] = $val1 / $val2;
    
-   $out[31:0] = ($op[1:0] == 2'b00) ? $sum[31:0] :
-                ($op[1:0] == 2'b01) ? $diff[31:0] :
-                ($op[1:0] == 2'b10) ? $prod[31:0] :
+   $out[31:0] = ($op[1:0] == 2'b00) ? $sum :
+                ($op[1:0] == 2'b01) ? $diff :
+                ($op[1:0] == 2'b10) ? $prod :
                 $quot[31:0]; 
 
    // Assert these to end simulation (before Makerchip cycle limit).
