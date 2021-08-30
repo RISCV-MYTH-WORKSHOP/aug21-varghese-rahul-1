@@ -24,7 +24,7 @@
    $out[31:0] = ($op[1:0] == 2'b00) ? $sum :
                 ($op[1:0] == 2'b01) ? $diff :
                 ($op[1:0] == 2'b10) ? $prod :
-                $quot[31:0]; 
+                $quot; 
 
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = *cyc_cnt > 40;
