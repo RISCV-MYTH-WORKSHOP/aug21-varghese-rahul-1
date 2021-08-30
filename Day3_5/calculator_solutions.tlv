@@ -5,7 +5,7 @@
    
    m4_include_lib(['https://raw.githubusercontent.com/stevehoover/RISC-V_MYTH_Workshop/bd1f186fde018ff9e3fd80597b7397a1c862cf15/tlv_lib/calculator_shell_lib.tlv'])
    
-   //https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0BghPjx
+   // https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0BghPjx
    
 \SV
    
@@ -45,7 +45,7 @@
                          ($op[2:0] == 3'b101) ? >>2$out :
                          >>2$out;
 
-         
+   m4+cal_viz(@3) // Arg: Pipeline stage represented by viz, should be atleast equal to last stage of CALCULATOR logic.
 
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = *cyc_cnt > 40;
