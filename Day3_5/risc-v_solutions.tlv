@@ -66,7 +66,7 @@
    //  o instruction memory
    //  o register file
    //  o data memory
-   //  o CPU visualization
+   //_  o CPU visualization
    |cpu
       m4+imem(@1)    // Args: (read stage)
       //m4+rf(@1, @1)  // Args: (read stage, write stage) - if equal, no register bypass is required
