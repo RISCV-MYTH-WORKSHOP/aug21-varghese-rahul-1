@@ -33,6 +33,9 @@
    m4_asm(BLT, r13, r12, 1111111111000) // If a3 is less than a2, branch to label named <loop>
    m4_asm(ADD, r10, r14, r0)            // Store final result to register a0 so that it can be read by main program
    
+   m4_asm(SW, r0, r10, 10000)
+   m4_asm(LW, r17, r0, 10000)
+   
    // Optional:
    // m4_asm(JAL, r7, 00000000000000000000) // Done. Jump to itself (infinite loop). (Up to 20-bit signed immediate plus implicit 0 bit (unlike JALR) provides byte address; last immediate bit should also be 0)
    m4_define_hier(['M4_IMEM'], M4_NUM_INSTRS)
@@ -212,13 +215,11 @@
          $dmem_addr[3:0] = $result[5:2] ;
          $dmem_wr_data[31:0] = $src2_value ;
          $dmem_rd_en = $is_load;
-         
-         
       
       @5
          $ld_data[31:0] = $dmem_rd_data;
          
-         *passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9);
+         *passed = |cpu/xreg[17]>>5$value == (1+2+3+4+5+6+7+8+9);
 
       
 
