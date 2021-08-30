@@ -30,6 +30,6 @@
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = *cyc_cnt > 40;
    *failed = 1'b0;
-\SV
+\SV_
    endmodule
 
