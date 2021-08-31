@@ -66,7 +66,7 @@ The complete TL-Verilog code implementation in Makerchip can be found [here](htt
 
 ![This is an image](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/calculator.PNG)
 
-## Pipelined 5 stage RISC-V core
+## Pipelined 5 stage RISC-V CPU
 
 The 5 stage pipeline shown in the schematic below is implemented.
 
@@ -82,6 +82,8 @@ The 5 stage pipeline shown in the schematic below is implemented.
 The complete TL-Verilog code implementation in Makerchip can be found [here](https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0Q1hBOy)
 
 ![This is an image](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/riscv.PNG)
+
+# Future Work
 
 
 
