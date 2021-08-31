@@ -38,7 +38,11 @@ Examples: [Compilation and Simulation](https://github.com/RISCV-MYTH-WORKSHOP/ri
 [Disassembly](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/disassemble.PNG) |
 [Debug](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/debug.png)
 
+## ABI (Application Binary Interface)
 
+An application program interacts with multiple low level layers of program to interact with the hardware. The ABI is one such interface and allows for the access of the hardware resources of the processor: the registers of the RISC-V architecture. It does so via system calls through the operating system or directly. The RISC-V specification has 32 registers specified using 5 bits.
+
+![This is an image](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/ABI.PNG)
 
 
 
