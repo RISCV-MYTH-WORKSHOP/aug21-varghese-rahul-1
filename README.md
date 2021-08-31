@@ -6,7 +6,7 @@ This repository gives a strong overview of the toolchain for RISC-V and 2 easier
 
 1. Commands to help compile, simulate, disassemble and debug in Linux using RISC-V's toolchain
 2. A pipelined calculator with validity and recall for four basic operations: addition, subtraction, multiplication and division
-3. A 4 stage RISC-V pipelined processor that supports most of RV32I instructions
+3. A 5 stage RISC-V pipelined processor that supports most of RV32I instructions
 
 # What is RISC-V?
 RISC-V is an open standard ISA based on RISC principles. It is open, simple, modular, extensible, stable and supported in several software toolchains.
@@ -65,6 +65,8 @@ More information can be found at [Redwood EDA TL-Verilog](https://www.redwoodeda
 The complete TL-Verilog code implementation in Makerchip can be found [here](https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0BghPjx#)
 
 ![This is an image](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/calculator.PNG)
+
+## Pipelined 5 stage RISC-V core
 
 
 
