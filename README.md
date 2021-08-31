@@ -17,6 +17,22 @@ RISC-V is an open standard ISA based on RISC principles. It is open, simple, mod
 5. Multiple standard and optional extensions, and allows custom ones
 4. Base and first standard instructions frozen so no major updates and stable
 
+## RISC-V Toolchain 
+The toolchain covers the flow from compilation to debug.
+
+1. Compilation of C program to Object ->
+`riscv64-unknown-elf-gcc -<compiler: O1, Ofast> -mabi=<ABI: lp32, lp64> -march=<architecture: RV32, RV64> -o <object filename> <C Program filename>`
+
+2. Disassembling of Object to Assembly ->
+`riscv64-unknown-elf-objdump -d <object filename>`
+
+3. Simulation of Object ->
+`spike pk <object filename>`
+
+4. Debug of Object ->
+`spike -d pk <object filename>`
+
+
 
 
 
