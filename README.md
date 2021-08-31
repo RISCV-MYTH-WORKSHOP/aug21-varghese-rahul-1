@@ -68,6 +68,21 @@ The complete TL-Verilog code implementation in Makerchip can be found [here](htt
 
 ## Pipelined 5 stage RISC-V core
 
+1. A 5 stage pipeline is created using the previous logic. @0, the program counter value is chosen depending on whether a branch is taken, a particular jump or load happens or reset happens. The instruction memory is enable as long as reset is 0 and from the pc we get the address that is fed to this memory.
+2. @1, the program counter gets incremented by 4 bytes to move to a new instruction by default. The data that is read from the instruction memory is fed to the decode. Using the 6:2 bits, the type of instruction is determined: I, S, R, U, B and J. Then the immediate value is extracted using different bits depending on the type. rs2, rs1, rd, funct7, funct3, and opcode validity are determined using the instruction types. Once a valid signal is generated for these fields, the appropriate bits are assigned to them. Following that, the decode bits which determine which instruction is being passed is determined using {funct7[5] ,$funct3, $opcode}. For the case of load, the opcode is only used because all 5 types of loads are treated equivalently. 
+3. @2, The register file allows two reads and one write. Read is enabled when the source signals are valid and the sources, $rs1 and $rs2 are then passed as addresses. When data is read from the two ports, they are fed into the ALU.
+
+
+
+
+
+
+
+
+
+
+https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0Q1hBOy
+
 
 
 
