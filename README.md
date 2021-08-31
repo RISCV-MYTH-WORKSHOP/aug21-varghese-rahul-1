@@ -9,7 +9,7 @@ This repository gives a strong overview of the Linux environment for RISC-V and 
 3. A 4 stage RISC-V pipelined processor that supports most of RV32I instructions
 
 # What is RISC-V?
-RISC-V is an open standard ISA based on RISC principles. It is open, simple, modular, extensible, stable and supported in several popular software toolchains.
+RISC-V is an open standard ISA based on RISC principles. It is open, simple, modular, extensible, stable and supported in several software toolchains.
 
 ## Benefits of RISC-V
 1. Free and open source which allows for easy collaboration
@@ -21,18 +21,22 @@ RISC-V is an open standard ISA based on RISC principles. It is open, simple, mod
 The toolchain covers the flow from compilation to debug.
 
 1. Compilation of C program to Object ->
-`riscv64-unknown-elf-gcc -<compiler: O1, Ofast> -mabi=<ABI: lp32, lp64> -march=<architecture: RV32, RV64> -o <object filename> <C Program filename>`
+`riscv64-unknown-elf-gcc -<compiler: O1, Ofast> -mabi=<ABI: lp32, lp64> -march=<architecture: RV32, RV64> -o <object filename> <C program filename>`
 
-2. Disassembling of Object to Assembly ->
-`riscv64-unknown-elf-objdump -d <object filename>`
-
-3. Simulation of Object ->
+2. Simulation of Object ->
 `spike pk <object filename>`
+
+3. Disassembling of Object to Assembly ->
+`riscv64-unknown-elf-objdump -d <object filename>`
 
 4. Debug of Object ->
 `spike -d pk <object filename>`
 
+The links below have examples:
 
+[Compilation and Simulation](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/compile_simulate.PNG) |
+[Disassembly](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/disassemble.PNG) |
+[Debug](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/debug.png)
 
 
 
