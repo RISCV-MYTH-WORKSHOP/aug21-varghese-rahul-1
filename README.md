@@ -77,6 +77,8 @@ The complete TL-Verilog code implementation in Makerchip can be found [here](htt
 
 The complete TL-Verilog code implementation in Makerchip can be found [here](https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0Q1hBOy)
 
+![This is an image](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/riscv.PNG)
+
 
 
 
