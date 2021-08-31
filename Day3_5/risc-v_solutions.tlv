@@ -47,23 +47,25 @@
          $reset = *reset;
          //$start = >>1$reset && !$reset;
          //$valid = $reset ? 0 : $start ? 1 : >>3$valid ;
-      
+         
+         //Program Counter
          $pc[31:0] = >>1$reset ? 32'b0 :
                      >>3$valid_taken_br ? >>3$br_tgt_pc :
                      >>3$valid_load ? >>3$inc_pc :
                      (>>3$valid_jump && >>3$is_jal) ? >>3$br_tgt_pc :
                      (>>3$valid_jump && >>3$is_jalr) ? >>3$jalr_tgt_pc :
                      >>1$inc_pc;
-         
+                     
+         //Instruction Memory            
          $imem_rd_en = !$reset;
          $imem_rd_addr[M4_IMEM_INDEX_CNT-1:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
          
       @1
-         $inc_pc[31:0] = $pc + 32'd4;
+         $inc_pc[31:0] = $pc + 32'd4; //incrementing pc by 4
          
          $instr[31:0] = $imem_rd_data[31:0];
          
-         
+         //Instruction Decode
          $is_i_instr = $instr[6:2] ==? 5'b0000x || 
                        $instr[6:2] ==? 5'b001x0 || 
                        $instr[6:2] ==? 5'b11001;
@@ -153,6 +155,7 @@
          
          `BOGUS_USE($is_load $is_beq $is_bne $is_blt $is_bge $is_bltu $is_bgeu $is_addi $is_add $is_lui $is_auipc $is_jal $is_jalb $is_sb $is_sh $is_sw $is_slti $is_sltiu $is_xori $is_ori $is_andi $is_slli $is_srli $is_srai $is_sub $is_sll $is_slt $is_sltu $is_xor $is_srl $is_sra $is_or $is_and)
       @2
+         //Register Read
          $rf_rd_en1 = $rs1_valid;
          $rf_rd_index1[4:0] = $rs1;
          $rf_rd_en2 = $rs2_valid;
@@ -161,10 +164,10 @@
          $src1_value[31:0] = (>>1$rf_wr_en && (>>1$rd == $rs1)) ? >>1$result : $rf_rd_data1;
          $src2_value[31:0] = (>>1$rf_wr_en && (>>1$rd == $rs2)) ? >>1$result : $rf_rd_data2;
          
-         $br_tgt_pc[31:0] = $pc + $imm;
+         $br_tgt_pc[31:0] = $pc + $imm; //branch target calculation 
          
       @3
-         
+         //ALU
          $sltu_rslt[31:0]  = $src1_value[31:0] < $src2_value[31:0];
          $sltiu_rslt[31:0] = $src1_value[31:0] < $imm;
          
@@ -195,7 +198,7 @@
                          $is_s_instr ? $src1_value[31:0] + $imm :
                          32'bx;
          
-         
+         //branch taken or not calculations 
          $taken_br = $is_beq ? ($src1_value[31:0] == $src2_value[31:0]) :
                      $is_bne ?($src1_value[31:0] != $src2_value[31:0]) :
                      $is_blt ? (($src1_value[31:0] < $src2_value[31:0]) ^ ($src1_value[31] != $src2_value[31])) :
@@ -204,11 +207,12 @@
                      $is_bgeu ? ($src1_value[31:0] >= $src2_value[31:0]) :
                      1'b0;
          
+         //Register Write
          $rf_wr_en = ($rd_valid && ($rd != 5'b0) && $valid) || >>2$valid_load;
          $rf_wr_index[4:0] = !(>>2$valid_load) ? $rd : >>2$rd;
          $rf_wr_data[31:0] = !(>>2$valid_load) ? $result : >>2$ld_data ;
          
-         $valid = !( >>1$valid_taken_br || >>2$valid_taken_br || >>1$valid_load || >>2$valid_load );
+         $valid = !( >>1$valid_taken_br || >>2$valid_taken_br || >>1$valid_load || >>2$valid_load ); //invalidates next 2 instructions
          
          $valid_load = $valid && $is_load;
          
@@ -219,6 +223,7 @@
          $jalr_tgt_pc = $src1_value + $imm;
          
       @4 
+         //Data Memory
          $dmem_wr_en = $is_s_instr && $valid ;
          $dmem_addr[3:0] = $result[5:2] ;
          $dmem_wr_data[31:0] = $src2_value ;
@@ -227,7 +232,7 @@
       @5
          $ld_data[31:0] = $dmem_rd_data;
          
-         *passed = |cpu/xreg[17]>>5$value == (1+2+3+4+5+6+7+8+9);
+         *passed = |cpu/xreg[17]>>5$value == (1+2+3+4+5+6+7+8+9); //verification test
 
       
 
