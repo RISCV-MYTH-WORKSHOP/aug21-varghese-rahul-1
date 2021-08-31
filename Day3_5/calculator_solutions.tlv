@@ -22,8 +22,8 @@
       
       ?$valid_or_reset
          @1
-            $val1[31:0] = >>2$out;
-            $val2[31:0] = $rand2[3:0];
+            $val1[31:0] = >>2$out; //storing last value of output 
+            $val2[31:0] = $rand2[3:0]; //generates random value
             
             //arithmetic operations
             $sum[31:0] = $val1 + $val2;
