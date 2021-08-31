@@ -9,7 +9,7 @@ This repository gives a strong overview of the toolchain for RISC-V and 2 easier
 3. A 5 stage RISC-V pipelined processor that supports most of RV32I instructions
 
 # What is RISC-V?
-RISC-V is an open standard ISA based on RISC principles. It is open, simple, modular, extensible, stable and supported in several software toolchains.
+RISC-V is an open standard ISA based on RISC principles. It is open, simple, modular, extensible, stable and supported in several software toolchains. More information can be found at [RISC-V](https://riscv.org/).
 
 ## Benefits of RISC-V
 1. Free and open source which allows for easy collaboration
