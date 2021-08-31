@@ -56,7 +56,7 @@ More information can be found at [Redwood EDA TL-Verilog](https://www.redwoodeda
 
 ## Pipelined Calculator 
 
-1. A combinational calculator was setup which has no concept of state and two random input values. Four basic operations were implemented: addition, subtraction, multiplication and division using a 4 input multiplexer.
+1. A combinational calculator was setup which has no concept of state and two random input values. Four basic operations were implemented: addition, subtraction, multiplication and division and connected to a 4 input multiplexer.
 2. A sequential calculator was then made by adding a flipflop at the end of the result using `>>1` which signifies lookahead 1, and connecting it back to one input. 
 3. The calculator was pipelined right before the mux using `@1, @2 and |calc`, and a counter was used as an oscillator to generate a valid signal which was passed to the mux to calculate the output only every other cycle. 
 4. An alternative to this form of validity was implemented by using `?$signal_name` which allowed for the creaton of valid signals. Another stage was added using `@0` and the reset and valid signals were implemented there. The signal was valid when there was reset or if the oscillatory behavior happened. `?$valid_or_reset` was used. 
