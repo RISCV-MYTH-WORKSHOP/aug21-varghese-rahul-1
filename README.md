@@ -85,6 +85,16 @@ The complete TL-Verilog code implementation in Makerchip can be found [here](htt
 
 # Future Work
 
+Finishing the almost complete RV32I and extending the instruction set to RV32M, RV32F, RV32D, RV32Q and/or RV32C.
+
+# Acknowledgements
+
+- Steve Hoover, Founder of Redwood EDA, developer of TL-Verilog and Makerchip
+- Kunal Ghosh, Co-Founder VSD Corp. Pvt. Ltd.
+- Shivani Shah, TA - MYTH Workshop | MS by Research student at IIIT Bangalore
+- Shivam Potdar, TA | GSoC '20 @ FOSSi Foundation
+- Vineet Jain, T.A. for MYTH workshop | GSoC'21
+
 
 
 
