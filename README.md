@@ -46,7 +46,7 @@ An application program interacts with multiple low level layers of program to in
 
 # RTL Design in TL-Verilog using Makerchip
 
-Transaction-level Verilog (TL-Verilog) allows for high level models to be composed quickly. It allows for timing abstraction, simpler pipeling and the easy conversion to Verilog/SystemVerilog. Also, it removes a lot of constructs including always blocks in favor of more effective ones. 
+Transaction-level Verilog (TL-Verilog) allows for high level models to be composed quickly with less code. It allows for timing abstraction, simpler pipeling and the easy conversion to Verilog/SystemVerilog. Also, it removes a lot of constructs including always blocks in favor of more effective ones. 
 
 Makerchip is an environment that allows you to code, compile, simulate and debug Verilog designs online. The code, block diagrams, waveforms, and novel visualization capabilities are tightly integrated.
 
@@ -84,6 +84,7 @@ The complete TL-Verilog code implementation in Makerchip can be found [here](htt
 ![This is an image](https://github.com/RISCV-MYTH-WORKSHOP/riscv_myth_workshop_aug21-varghese-rahul-1/blob/master/Day2/riscv.PNG)
 
 # Future Work
+
 
 
 
