@@ -69,20 +69,13 @@ The complete TL-Verilog code implementation in Makerchip can be found [here](htt
 ## Pipelined 5 stage RISC-V core
 
 1. A 5 stage pipeline is created using the previous logic. `@0`, the program counter value is chosen depending on whether a branch is taken, a particular jump or load happens or reset happens. The instruction memory is enabled as long as reset is 0 and from the counter we get the address that is fed to this memory.
-2. `@1`, the program counter gets incremented by 4 bytes to move to a new instruction by default. The data that is read from the instruction memory is fed to the decode. Using the 6:2 bits, the type of instruction is determined: I, S, R, U, B and J. Then the immediate value is extracted using different bits depending on the type. rs2, rs1, rd, funct7, funct3, and opcode validity are determined using the instruction types. Once a valid signal is generated for these fields, the appropriate bits are assigned to them. Following that, the decode bits which determine which instruction is being passed are determined using {funct7[5] ,$funct3, $opcode}. For the case of load, the opcode is only used because all 5 types of loads are treated equivalent to lw. 
+2. `@1`, the program counter gets incremented by 4 bytes to move to a new instruction by default. The data that is read from the instruction memory is fed to the decode. Using [6:2], the type of instruction is determined: I, S, R, U, B and J. Then the immediate value is extracted using different bits depending on the type. rs2, rs1, rd, funct7, funct3, and opcode validity are determined using the instruction types. Once a valid signal is generated for these fields, the appropriate bits are assigned to them. Following that, the decode bits which determine which instruction is being passed are determined using {funct7[5] ,$funct3, $opcode}. For the case of load, the opcode is only used because all 5 types of loads are treated equivalent to lw. 
 3. `@2`, the register file allows two reads and one write. Read is enabled when the source signals are valid and the sources, $rs1 and $rs2 are then passed as addresses. When data is read from the two ports, they are fed into the ALU normally. However, to avoid a read after write hazard, the register file write is checked using >>1 to see if write was enabled and if $rd is equal to $rs1/$rs2. If that is the case, the register is bypassed by passing in the result of the ALU >>1 instead. Moreover, the target branch address is computed by adding $pc to $imm.
-4. `@3`, depending on the instruction, the approprtiate operations are performed in the ALU and stored in result. $taken_br is calculated by checking through the 5 branch instructions' conditions. For the register file write, write is enabled when rd is valid, when rd isn't 0 because write should be disabled, and when the valid signal is asserted or when >>2$valid_load is asserted. $valid_taken_br = $valid && $taken_br and the same logic applies to load. $valid is when (>>1 or >>2) valid_taken_br or valid_load are not taken. Jump happens when it's jal or jalr. Valid jump has the previous logic, jal has the same logic as target branch address, and jalr target pc is $src1_value of the ALU and $imm. If >>2$valid_load is invalid, then rd and result are chosen for write address and data, otherwise >>2$rd and >>2$ld_data are chosen. 
+4. `@3`, depending on the instruction, the appropriate operations are performed in the ALU and stored in result. $taken_br is calculated by checking through the 5 branch instructions' conditions. For the register file write, write is enabled when rd is valid, when rd isn't 0 because write should be disabled, and when the valid signal is asserted or when >>2$valid_load is asserted. $valid_taken_br = $valid && $taken_br and the same logic applies to load. $valid is when (>>1 or >>2) valid_taken_br or valid_load are not taken. Jump happens when it's jal or jalr. Valid jump has the previous logic, jal has the same logic as target branch address, and jalr target pc is $src1_value of the ALU and $imm. If >>2$valid_load is invalid, then rd and result are chosen for write address and data, otherwise >>2$rd and >>2$ld_data are chosen. 
+5. `4`, for the data memory, read and write are enabled for a valid load and valid store respectively. [5:2] of result determines the address for load and store, and if it is a write $src2_value is written. 
+6. `5`, the data read from this memory is passed in ld_data. The RISC-V core can now be tested via the assembly program for sum of integers from 1 to 9, by storing the result in xreg[17]. This verification is done using `*passed = |cpu/xreg[17]>>5$value == (1+2+3+4+5+6+7+8+9)`.
 
-
-
-
-
-
-
-
-
-
-https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0Q1hBOy
+The complete TL-Verilog code implementation in Makerchip can be found [here](https://myth3.makerchip.com/sandbox/0XDfnhQOQ/0Q1hBOy)
 
 
 
