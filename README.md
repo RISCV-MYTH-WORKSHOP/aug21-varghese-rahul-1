@@ -2,9 +2,9 @@
 
 # RISC-V pipelining in TL-Verilog using Makerchip
 
-This repository gives a strong overview of the Linux environment for RISC-V and has pipelined examples.
+This repository gives a strong overview of the toolchain for RISC-V and 2 easier pipelined examples due to TL-Verilog.
 
-1. Linux instructions to help compile, disassemble, simulate and debug using RISC-V's toolchain
+1. Commands to help compile, disassemble, simulate and debug in Linux using RISC-V's toolchain
 2. A pipelined calculator with validity and recall for four basic operations: addition, subtraction, multiplication and division
 3. A 4 stage RISC-V pipelined processor that supports most of RV32I instructions
 
